@@ -1,12 +1,17 @@
 {
   "lamps": [
     {
-      "name": "Lampada Campari vintage ",
-      "price": 30,
+      "name": "Lampada Campari vintage",
       "material": "Base in acciaio color bronzo",
+      "price": 30,
       "status": "disponibile",
       "hidden": false,
-      "image": "images/IMG_0015.jpeg"
+      "images": [
+        "images/IMG_0015.jpeg",
+        "images/IMG_0017.jpeg",
+        "images/IMG_0016.jpeg"
+      ],
+      "alt": "Lampada Campari Soda vintage su base in acciaio color bronzo"
     }
   ]
 }

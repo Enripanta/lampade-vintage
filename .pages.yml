@@ -36,9 +36,10 @@ content:
             label: Nascondi dal sito
             type: boolean
             default: false
-          - name: image
-            label: Foto
+          - name: images
+            label: Foto (puoi caricarne più di una, scorribili con le frecce)
             type: image
+            list: true
           - name: alt
             label: Descrizione foto (per accessibilità)
             type: string

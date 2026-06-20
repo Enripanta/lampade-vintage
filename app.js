@@ -48,13 +48,30 @@ function renderGrid() {
 
   lamps.forEach((l, i) => {
     const sold = l.status === "venduto";
+    const imgs = (Array.isArray(l.images) && l.images.length) ? l.images : (l.image ? [l.image] : []);
+    const multi = imgs.length > 1;
     const card = document.createElement("article");
     card.className = "card reveal" + (sold ? " is-sold" : "");
     card.style.transitionDelay = (i % 3) * 0.08 + "s";
+
+    const slidesHtml = imgs.map((src, n) => {
+      const label = `${l.alt || l.name}${imgs.length > 1 ? " — foto " + (n + 1) : ""}`;
+      // prima foto subito; le altre caricate quando la scheda entra in vista
+      return n === 0
+        ? `<img src="${src}" alt="${label}" loading="lazy">`
+        : `<img data-src="${src}" alt="${label}">`;
+    }).join("");
+
+    const arrowsHtml = multi ? `
+        <button class="nav-arrow prev" aria-label="Foto precedente">${chevron("left")}</button>
+        <button class="nav-arrow next" aria-label="Foto successiva">${chevron("right")}</button>
+        <div class="dots">${imgs.map((_, n) => `<span class="${n === 0 ? "active" : ""}"></span>`).join("")}</div>` : "";
+
     card.innerHTML = `
       <div class="card-media">
         <span class="badge ${sold ? "venduto" : "disponibile"}">${sold ? "Venduto" : "Disponibile"}</span>
-        <img src="${l.image}" alt="${l.alt || l.name}" loading="lazy">
+        <div class="slides">${slidesHtml}</div>
+        ${arrowsHtml}
       </div>
       <div class="card-body">
         <h3>${l.name}</h3>
@@ -72,7 +89,48 @@ function renderGrid() {
     grid.appendChild(card);
   });
 
+  initCarousels();
   observeReveals();
+}
+
+/* --- Carosello foto per ogni scheda --- */
+function chevron(dir) {
+  const d = dir === "left" ? "M15 18l-6-6 6-6" : "M9 18l6-6-6-6";
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
+}
+
+function initCarousels() {
+  document.querySelectorAll("#grid .card-media").forEach(media => {
+    const slides = media.querySelector(".slides");
+    const imgs = media.querySelectorAll(".slides img");
+    if (imgs.length < 2) return;
+    const dots = media.querySelectorAll(".dots span");
+    let idx = 0;
+    const ensureLoaded = (n) => {
+      const im = imgs[n];
+      if (im && im.dataset.src) { im.src = im.dataset.src; im.removeAttribute("data-src"); }
+    };
+    const go = (i) => {
+      idx = (i + imgs.length) % imgs.length;
+      ensureLoaded(idx);
+      ensureLoaded((idx + 1) % imgs.length);
+      slides.style.transform = `translateX(${-idx * 100}%)`;
+      dots.forEach((d, di) => d.classList.toggle("active", di === idx));
+    };
+    ensureLoaded(1); // preload la seconda foto per il primo clic istantaneo
+    media.querySelector(".prev").addEventListener("click", e => { e.preventDefault(); go(idx - 1); });
+    media.querySelector(".next").addEventListener("click", e => { e.preventDefault(); go(idx + 1); });
+    dots.forEach((d, di) => d.addEventListener("click", e => { e.preventDefault(); go(di); }));
+    // swipe su mobile
+    let sx = null;
+    media.addEventListener("touchstart", e => { sx = e.touches[0].clientX; }, { passive: true });
+    media.addEventListener("touchend", e => {
+      if (sx === null) return;
+      const dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 40) go(dx < 0 ? idx + 1 : idx - 1);
+      sx = null;
+    }, { passive: true });
+  });
 }
 
 /* --- Filtri --- */
