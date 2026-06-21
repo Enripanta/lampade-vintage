@@ -2,6 +2,7 @@
   "lamps": [
     {
       "name": "Lampada Campari vintage",
+      "code": "31",
       "price": 30,
       "material": "Base in acciaio color bronzo",
       "status": "disponibile",
