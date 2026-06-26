@@ -58,7 +58,7 @@ function renderGrid() {
     card.style.transitionDelay = (i % 3) * 0.08 + "s";
 
     const slidesHtml = imgs.map((src, n) => {
-      const label = `${l.alt || l.name}${imgs.length > 1 ? " — foto " + (n + 1) : ""}`;
+      const label = l.alt || l.name;
       // prima foto subito; le altre caricate quando la scheda entra in vista
       return n === 0
         ? `<img src="${src}" alt="${label}" loading="lazy">`

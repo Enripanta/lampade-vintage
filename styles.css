@@ -155,10 +155,10 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.04; l
   overflow: hidden;
 }
 .hero-grid {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 48px;
-  align-items: center;
+  display: block;
+  max-width: 820px;
+  margin-inline: auto;
+  text-align: center;
 }
 .hero-copy { position: relative; z-index: 2; }
 .hero h1 {
@@ -167,9 +167,9 @@ h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.04; l
   letter-spacing: -0.015em;
 }
 .hero h1 .accent { color: var(--glow-soft); font-style: italic; }
-.hero .lead { color: rgba(255,255,255,.78); margin-top: 22px; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
-.hero-meta { display: flex; gap: 30px; margin-top: 42px; flex-wrap: wrap; }
+.hero .lead { color: rgba(255,255,255,.78); margin-top: 22px; margin-inline: auto; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; justify-content: center; }
+.hero-meta { display: flex; gap: 30px; margin-top: 42px; flex-wrap: wrap; justify-content: center; }
 .hero-meta div b { font-family: var(--display); font-size: 1.9rem; display: block; color: var(--glow-soft); }
 .hero-meta div span { font-size: .82rem; letter-spacing: .04em; color: rgba(255,255,255,.6); }
 
@@ -308,7 +308,7 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
 
 /* ---------- Story (Depero / Campari Soda heritage) ---------- */
 .story { background: var(--ink); color: var(--cream); }
-.story-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 54px; align-items: center; }
+.story-grid { display: block; max-width: 760px; margin-inline: auto; text-align: center; }
 .story img { border-radius: var(--radius-lg); box-shadow: 0 40px 80px -40px rgba(0,0,0,.7); }
 .story .eyebrow { color: var(--glow-soft); }
 .story h2 { color: #fff; font-size: clamp(2.2rem, 4.5vw, 3.2rem); margin: 18px 0 20px; }
